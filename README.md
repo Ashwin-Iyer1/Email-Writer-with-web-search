@@ -3,6 +3,8 @@ This program will write emails and search the web to find the top domains and th
 
 
 
-# To change what types of websites you want to get you can edit test.py and change the ".org" to any other domain to filter.
+# Settings
+what types of websites you want to get you can edit test.py and change the ".org" to any other domain to filter.
 
-# Currently working on many file types, getting emails from sites, going through google pages.
+# Issues / working on
+Currently working on many file types, getting emails from sites, going through google pages.
