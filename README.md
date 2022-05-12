@@ -9,5 +9,5 @@ what types of websites you want to get you can edit test.py and change the ".org
 # Issues / working on
 Currently working on many file types, getting emails from sites
 
-#Fixed!
-able to parse through multiple google sites
+# Fixed!
+able to parse through multiple google search pages
