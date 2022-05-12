@@ -48,7 +48,7 @@ def get_results(search_term):
 	else:
 		print(results)
 get_results(searchterm)
-	#Remove duplicate websites
+	#Remove duplicate website
 
 	# for b in len(results): 
 	# 	for g in len(results):
