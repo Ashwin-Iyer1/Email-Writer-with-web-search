@@ -10,4 +10,4 @@ what types of websites you want to get you can edit test.py and change the ".org
 Currently working on many file types, getting emails from sites, and finding emails on pages
 
 # Fixed!
-able to parse through multiple google search pages
+able to scarpe through multiple google search pages
