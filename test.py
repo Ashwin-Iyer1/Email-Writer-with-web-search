@@ -8,17 +8,20 @@ import requests, sys, bs4, webbrowser
 from urllib.parse import urlparse
 import time
 from selenium.webdriver.support import expected_conditions as EC
+import platform
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 
-searchterm = input('What would you like to email: ')
-numPages = int(input("How many pages to parse: "))
-def get_results(search_term):
+def get_results(search_term, numPages):
 	url = "https://www.startpage.com//"
-	browser = webdriver.Chrome(executable_path=r'chromedriver_win32\chromedriver.exe')
+	if platform.system() == 'Windows':
+		browser = webdriver.Chrome(executable_path=r'chromedrivers\chromedriver.exe')
+	if platform.system() == 'Darwin':
+		browser = webdriver.Chrome(executable_path = '/Users/ashwin/Downloads/Email-Writer-with-web-search-main/chromedrivers/chromedriver-mac')
+		#browser = webdriver.Chrome(executable_path = 'chromedrivers\chromedriver-mac)
 	browser.get(url)
 	browser.maximize_window()
 	search_box = browser.find_element(By.ID, "q")
@@ -28,6 +31,7 @@ def get_results(search_term):
 	links = []
 	results = []
 	i = 0
+	v = 0
 	while x < numPages:
 		try:
 			links.extend(browser.find_elements(By.XPATH, "//A[@class='w-gl__result-url result-link']"))
@@ -46,8 +50,17 @@ def get_results(search_term):
 	if len(results) == 0:
 		print("\nno organizations")
 	else:
-		print(results)
-get_results(searchterm)
+		while v < len(results):
+
+			try:
+				r = requests.head(results[v])
+    	# prints the int of the status code. Find more at httpstatusrappers.com :)
+			except requests.ConnectionError:
+				print("failed to connect to " + results[v])
+			str1 = " "
+			str1 = (str1.join(results))
+			v = v + 1
+	return(str1)
 	#Remove duplicate website
 
 	# for b in len(results): 
