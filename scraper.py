@@ -17,9 +17,9 @@ from selenium.webdriver.common.by import By
 def get_results(search_term, numPages):
 	url = "https://www.startpage.com//"
 	if platform.system() == 'Windows':
-		browser = webdriver.Chrome(executable_path=r'chromedrivers\chromedriver.exe')
+		browser = webdriver.Chrome(executable_path=r'chromedrivers/chromedriver.exe')
 	if platform.system() == 'Darwin':
-		browser = webdriver.Chrome(executable_path = 'chromedrivers/chromedriver-mac')
+		browser = webdriver.Chrome(executable_path = r'chromedrivers/chromedriver-mac')
 	browser.get(url)
 	browser.maximize_window()
 	search_box = browser.find_element(By.ID, "q")

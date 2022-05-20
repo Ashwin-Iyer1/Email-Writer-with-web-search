@@ -22,19 +22,19 @@ while r < len(website):
 	temp = "https://" + urlparse(website[r]).netloc
 	response = requests.get(temp)
 	if(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text, re.I))) != set():
-		emails.append(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text, re.I)))
+		emails.extend(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text, re.I)))
 	elif (requests.get(temp + "/about/")).status_code == requests.codes.ok:
 		response = requests.get(temp + "/about/")
-		if(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text + "/about/", re.I))) != set():
-			emails.append(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text + "/about/", re.I)))
+		if(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text, re.I))) != set():
+			emails.extend(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text, re.I)))
 	elif (requests.get(temp + "/contact/")).status_code == requests.codes.ok:
 		response = requests.get(temp + "/contact/")
-		if(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text + "/contact/", re.I))) != set():
-			emails.append(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text + "/contact/", re.I)))
+		if(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text, re.I))) != set():
+			emails.extend(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text, re.I)))
 	elif (requests.get(temp + "/contact-us/")).status_code == requests.codes.ok:
 		response = requests.get(temp + "/contact-us/")
-		if(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text + "/contact-us/", re.I))) != set():
-			emails.append(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text + "/contact-us/", re.I)))
+		if(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text, re.I))) != set():
+			emails.extend(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text, re.I)))
 	else:
 		print("no emails found at " + temp)
 	r = r + 1
