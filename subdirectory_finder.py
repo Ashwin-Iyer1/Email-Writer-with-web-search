@@ -1,14 +1,15 @@
 import os
 import re
 from requests_html import HTMLSession
-
+import tldextract
 #from scraper import results
 import requests
 import urllib.request
 from urllib.parse import urlparse
 import webbrowser
 import scraper
-
+import socket
+b = 0
 i = 0
 v = 0
 a = 0
@@ -16,27 +17,44 @@ searchterm = input('What would you like to email: ')
 numPages = int(input("How many pages to parse: "))
 website = (scraper.get_results(searchterm, numPages)).split()
 emails = []
+subdomains = ['www.', 'about.', 'contact.']
+result = []
 r = 0
-print(website)
-while r < len(website):
-	temp = "https://" + urlparse(website[r]).netloc
-	response = requests.get(temp)
-	if(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text, re.I))) != set():
-		emails.extend(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text, re.I)))
-	elif (requests.get(temp + "/about/")).status_code == requests.codes.ok:
-		response = requests.get(temp + "/about/")
-		if(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text, re.I))) != set():
-			emails.extend(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text, re.I)))
-	elif (requests.get(temp + "/contact/")).status_code == requests.codes.ok:
-		response = requests.get(temp + "/contact/")
-		if(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text, re.I))) != set():
-			emails.extend(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text, re.I)))
-	elif (requests.get(temp + "/contact-us/")).status_code == requests.codes.ok:
-		response = requests.get(temp + "/contact-us/")
-		if(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text, re.I))) != set():
-			emails.extend(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text, re.I)))
+
+
+subdirectorys = ['', '/about/', '/contact/', '/contact-us/', '/#Contact/', '/#About/']
+while b < len(website):
+	temp1 = tldextract.extract(website[b])
+	if(temp1.suffix == "gov"):
+		del website[b]
+	b = b + 1
+for d in website:
+	temp2 = tldextract.extract(d)
+	if temp2.domain not in result: 
+		result.append(d) 
+print(result)
+while r < len(result):
+	for g in subdomains:
+		for c in subdirectorys:
+			extracted = (tldextract.extract(result[r]))
+			temp = ("https://" + g + "{}.{}".format(extracted.domain, extracted.suffix))
+			print("checking: " + temp + c)
+			try:
+				#if (requests.get(temp + c)).status_code == requests.codes.ok:
+					response = requests.get(temp + c)
+					for re_match in re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text):
+						if re_match not in emails:
+							emails.append(re_match)
+					for re_match in re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.org", response.text):
+						if re_match not in emails:
+							emails.append(re_match)
+					# if(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text, re.I))) != set():
+						# emails.append(set(re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text, re.I)))
+			except Exception:
+				print("NOT AVAILABLE")
+				pass
 	else:
-		print("no emails found at " + temp)
+		print("no emails found at " + result[r])
 	r = r + 1
 if(len(emails) != 0):
 	while i < len(emails):

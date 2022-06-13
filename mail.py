@@ -15,6 +15,8 @@ msg.set_content(message)
 if len(contacts) == 0:
 	print("no emails found")
 	exit()
+#FIX FILES SENDING 
+
 # files = [r'C:\Users\ashwin\Pictures\Saved Pictures\coupon.png']
 # if(len(files) != 0):
 # 	msg.set_content('Image attached...')
