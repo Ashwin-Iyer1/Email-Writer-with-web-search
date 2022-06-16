@@ -4,10 +4,13 @@ This program will write emails and search the web to find the top domains and th
 
 
 # Settings
-what types of websites you want to get you can edit test.py and change the ".org" to any other domain to filter.
+Currently working on settings
 
 # Issues / working on
-Currently working on many file types, getting emails from sites, and finding emails on pages, currently semi-working on MacOs devices but more updataes to come
+Currently working on many file types and making a better GUI
 
 # Fixed!
-able to scarpe through multiple google search pages
+Able to scarpe through multiple google search pages
+Getting emails from sites
+Should be working on MacOs
+Finding emails on pages
