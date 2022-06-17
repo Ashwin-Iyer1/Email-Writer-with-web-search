@@ -1,4 +1,3 @@
-import os
 import re
 from requests_html import HTMLSession
 import tldextract
@@ -9,12 +8,18 @@ from urllib.parse import urlparse
 import webbrowser
 import scraper
 import socket
+import os
+import sys
+import window
+from window import web
+from window import page
+searchterm = web
+numPages = page
+
 b = 0
 i = 0
 v = 0
 a = 0
-searchterm = input('What would you like to email: ')
-numPages = int(input("How many pages to parse: "))
 website = (scraper.get_results(searchterm, numPages)).split()
 emails = []
 subdomains = ['www.', 'about.', 'contact.']
@@ -43,8 +48,7 @@ while r < len(result):
 				#if (requests.get(temp + c)).status_code == requests.codes.ok:
 					response = requests.get(temp + c)
 					for re_match in re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.com", response.text):
-						if re_match not in emails:
-							emails.append(re_match)
+						emails.append(re_match)
 					for re_match in re.findall(r"[a-z0-9\.\-+_]+@[a-z0-9\.\-+_]+\.org", response.text):
 						if re_match not in emails:
 							emails.append(re_match)
