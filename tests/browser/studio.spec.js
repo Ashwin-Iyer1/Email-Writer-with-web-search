@@ -1,0 +1,50 @@
+const { test, expect } = require('@playwright/test');
+test('complete sample research, selection, preview and download', async ({ page }) => {
+  const errors = []; page.on('pageerror', (error) => errors.push(error.message));
+  await page.goto('/'); await page.getByRole('button', { name: 'Load fictional example' }).click();
+  await expect(page.locator('#count')).toHaveText('4 / 4');
+  await page.getByRole('checkbox', { name: 'Select hello@juniper.example.org', exact: true }).uncheck();
+  await page.getByRole('button', { name: 'Review selected drafts' }).click();
+  await expect(page.locator('#feedback')).toContainText('3 drafts ready');
+  await expect(page.locator('#preview-subject')).toHaveText('Volunteering with Juniper Community Garden');
+  const pending = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Export reviewed drafts' }).click();
+  const download = await pending;
+  expect(download.suggestedFilename()).toBe('research-drafts.zip');
+  expect(await download.failure()).toBeNull();
+  await page.getByLabel('Subject template').fill('New {{organization}}');
+  await expect(page.getByRole('button', { name: 'Export reviewed drafts' })).toBeDisabled();
+  expect(errors).toEqual([]);
+});
+test('source import deduplication and useful invalid-template feedback', async ({ page }) => {
+  await page.goto('/');
+  await page.getByLabel('Organization', { exact: true }).fill('Test garden');
+  await page.getByLabel('Source URL').fill('https://example.org/contact');
+  await page.getByLabel('Page text or HTML').fill('<p>hi@example.org</p><a href="mailto:HI@example.org">Mail</a><script>fake@example.org</script>');
+  await page.getByRole('button', { name: 'Extract contacts' }).click();
+  await expect(page.locator('#count')).toHaveText('1 / 1');
+  await page.getByLabel('Message template').fill('Hello {{missing}}');
+  await page.getByRole('button', { name: 'Review selected drafts' }).click();
+  await expect(page.locator('#feedback')).toContainText('Unknown template field: missing');
+  await expect(page.getByRole('button', { name: 'Export reviewed drafts' })).toBeDisabled();
+});
+test('a delayed review cannot authorize changed text', async ({ page }) => {
+  await page.goto('/'); await page.getByRole('button', { name: 'Load fictional example' }).click();
+  await expect(page.locator('#count')).toHaveText('4 / 4');
+  let release; const gate = new Promise((resolve) => release = resolve);
+  await page.route('**/api/preview', async (route) => { const response = await route.fetch(); await gate; await route.fulfill({ response }); });
+  await page.getByRole('button', { name: 'Review selected drafts' }).click();
+  await page.getByLabel('Subject template').fill('Edited while pending'); release();
+  await expect(page.getByRole('button', { name: 'Review selected drafts' })).toBeEnabled();
+  await expect(page.getByRole('button', { name: 'Export reviewed drafts' })).toBeDisabled();
+  await expect(page.locator('#preview-content')).toBeHidden();
+});
+for (const width of [390, 1440]) test(`responsive workspace at ${width}px`, async ({ page }) => {
+  await page.setViewportSize({ width, height: 900 });
+  await page.goto('/'); await page.getByRole('button', { name: 'Load fictional example' }).click();
+  await expect(page.locator('#count')).toHaveText('4 / 4');
+  await page.getByRole('button', { name: 'Review selected drafts' }).click();
+  await expect(page.locator('#preview-content')).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: `test-results/workspace-${width}.png`, fullPage: true });
+});

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.svg"><title>Correspondence — Research & draft studio</title><link rel="stylesheet" href="/style.css"><script src="/app.js" type="module"></script></head>
+<body>
+<header><a class="brand" href="/">C<span>↗</span> <strong>Correspondence</strong></a><span class="status"><i></i> Local research studio</span><a href="https://github.com/Ashwin-Iyer1/Email-Writer-with-web-search" target="_blank" rel="noopener">Source ↗</a></header>
+<main>
+<section class="intro"><div><p class="eyebrow">RESEARCH FIRST. WRITE WITH CONTEXT.</p><h1>A thoughtful email<br>starts with a source.</h1><p class="lede">Collect public contact details, keep the evidence beside them, and turn your research into individual drafts.</p></div><aside><span class="edition">01 / THE WORKSPACE</span><p>Your research stays in this session. Export drafts to review in your mail app.</p><button id="sample" class="secondary">Load fictional example ↗</button><button id="clear" class="text-button">Clear workspace</button></aside></section>
+<div id="feedback" role="status" aria-live="polite">Start with an example, or add a source below.</div>
+<div class="workspace">
+<section class="panel research"><div class="section-title"><span>01</span><h2>Find the right people</h2></div>
+<form id="search-form"><label for="query">Search the web</label><div class="inline"><input id="query" placeholder="Community gardens volunteer contact" maxlength="500" required><button type="submit" class="secondary">Search ↗</button></div><p class="hint">Search opens in a new tab. Paste the relevant page text or saved HTML below.</p></form>
+<form id="source-form"><div class="two"><div><label for="organization">Organization</label><input id="organization" maxlength="160" placeholder="Organization name"></div><div><label for="source-url">Source URL</label><input id="source-url" type="url" placeholder="https://example.org/contact" required></div></div><label for="source-text">Page text or HTML</label><textarea id="source-text" rows="6" maxlength="500000" required placeholder="Paste the contact section here. Mailto links and visible email addresses are recognized."></textarea><div class="inline actions"><button type="button" class="file-button" id="import-page">Import saved page</button><input type="file" id="html-file" accept=".html,.htm,.txt" hidden><button id="extract" type="submit">Extract contacts →</button></div></form>
+</section>
+<section class="panel contacts"><div class="section-title"><span>02</span><h2>Review your contacts</h2><strong id="count" class="badge">0</strong></div><div class="inline"><label class="check"><input type="checkbox" id="select-all"> Select all</label><button id="contacts-export" class="text-button" disabled>Export CSV ↓</button></div><div id="contact-list" class="contact-list"><p class="empty">Your sources will appear here.<br><span>Each address keeps its organization and source link.</span></p></div></section>
+<section class="panel compose"><div class="section-title"><span>03</span><h2>Make it personal</h2></div><label for="subject">Subject template</label><input id="subject" value="Volunteering with {{organization}}" maxlength="1000"><label for="message">Message template</label><textarea id="message" rows="9">Hello {{organization}} team,
+
+I found your contact information on {{source_url}} and would like to learn about volunteering with your organization.
+
+Could you share the next steps and any upcoming opportunities?
+
+Thank you!</textarea><p class="hint">Available fields: <code>{{organization}}</code> <code>{{email}}</code> <code>{{source_url}}</code> <code>{{note}}</code>. Add a research note to a contact before using it.</p><button id="review">Review selected drafts →</button></section>
+<section class="panel preview"><div class="section-title"><span>04</span><h2>Read before you export</h2></div><div id="preview-empty" class="empty">Select your contacts and review the drafts.<br><span>Unfilled or unknown fields are caught before export.</span></div><div id="preview-content" hidden><div class="inline"><label for="draft-select">Preview recipient</label><select id="draft-select"></select></div><article class="letter"><p class="to" id="preview-to"></p><h3 id="preview-subject"></h3><pre id="preview-body"></pre></article></div><button id="download" disabled>Export reviewed drafts ↓</button><p class="hint">A ZIP of individual .eml drafts and the contact CSV. Nothing is sent.</p></section>
+</div>
+<footer><span>From discovery to a considered first message.</span><span>Python standard library · No accounts required</span></footer>
+</main></body></html>

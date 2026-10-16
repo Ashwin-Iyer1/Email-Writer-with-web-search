@@ -1,0 +1,5 @@
+[
+  {"organization":"Juniper Community Garden","url":"https://juniper.example.org/contact","text":"<h1>Get involved</h1><p>For Saturday garden days, email <a href='mailto:volunteer@juniper.example.org'>our volunteer coordinator</a>.</p><p>General questions: hello@juniper.example.org</p>","note":"Interested in the Saturday garden days."},
+  {"organization":"Harbor Reading Room","url":"https://harbor.example.org/volunteer","text":"We welcome reading buddies. Contact readers@harbor.example.org to ask about our program.","note":"Ask about the reading buddy program."},
+  {"organization":"Maple Food Collective","url":"https://maple.example.org/contact","text":"Volunteer shifts: shifts@maple.example.org. Please include your weekly availability.","note":"Can help with a weekly evening shift."}
+]

@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+.env.*
+login.txt
+*drafts.zip
+reviewed-contacts.csv
+test-results/
+node_modules/
